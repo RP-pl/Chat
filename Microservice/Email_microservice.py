@@ -21,8 +21,8 @@ def send():
     redis_db.set(hash,username)
     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
     server.ehlo()
-    server.login("rapikul111@gmail.com", "asdrtyui1")
-    server.sendmail("rapikul111@gmail.com", email, "Welcome to Chat!! \n To authorize your account enter in this link:\n"+'http://edz-web.tplinkdns.com/authorize/'+hash)
+    server.login("email", "pwd")
+    server.sendmail("email", email, "Welcome to Chat!! \n To authorize your account enter in this link:\n"+'http://edz-web.tplinkdns.com/authorize/'+hash)
     server.close()
     return "OK"
 @app.route("/authorize/<hash>",methods=['GET'])
