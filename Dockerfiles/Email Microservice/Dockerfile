@@ -1,5 +1,5 @@
 FROM ubuntu
-COPY ./ChatMS /home
+COPY ./Email_microservice.py /home
 RUN apt-get update
 RUN apt-get install python3.8 -y
 RUN apt-get install python3-pip -y
