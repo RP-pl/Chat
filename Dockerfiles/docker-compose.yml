@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  host:
+    image: host
+    ports:
+      - "0.0.0.0:8080:8080"
+    depends_on:
+      - mailing_service
+      - mongo
+  mongo:
+    image: mongo
+    ports:
+      - "127.0.0.1:8081:27017"
+  redis:
+    image: redis_server
+    ports:
+      - "127.0.0.1:8083:6379"
+  mailing_service:
+    image: pyenv
+    ports:
+      - "127.0.0.1:8082:8082"
+    depends_on:
+      - redis
+      - mongo
