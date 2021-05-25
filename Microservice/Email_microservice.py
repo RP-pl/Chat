@@ -6,8 +6,8 @@ from pymongo import MongoClient
 import hashlib
 from redis import Redis
 app = Flask(__name__)
-redis_db = Redis(host='host.docker.internal',port=8083)
-mongo_db = MongoClient('host.docker.internal',8081).ChatDB.Users
+redis_db = Redis(host='172.16.238.102',port=6379)
+mongo_db = MongoClient('172.16.238.101',27017).ChatDB.Users
 @app.route("/",methods=['GET'])
 def hello():
     return str(redis_db) + str(mongo_db)
