@@ -12,11 +12,11 @@ import java.net.http.HttpResponse;
 public class HttpSender {
     HttpClient client = HttpClient.newBuilder().build();
     public void send(String username,String email) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder().GET().header("username",username).header("email",email).uri(URI.create("http://host.docker.internal:8082/send")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().header("username",username).header("email",email).uri(URI.create("http://172.16.238.103:8082/send")).build();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
     }
     public void authorize(String hash) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://host.docker.internal:8082/authorize/"+hash)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://172.16.238.103:8082/authorize/"+hash)).build();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString());
     }
 }

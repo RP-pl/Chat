@@ -31,7 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/check").hasRole("USER")
                 .antMatchers("/add").hasRole("USER")
                 .antMatchers("/chat").hasRole("USER")
-                .antMatchers("/settings").hasRole("USER");
+                .antMatchers("/settings").hasRole("USER")
+                .antMatchers("/file").hasRole("USER");
         http.csrf().disable();
     }
 

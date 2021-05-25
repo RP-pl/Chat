@@ -7,7 +7,7 @@
                 var input = document.getElementById('data');
                 input.value = "";
 }
-    function sendFile(input){
+    async function sendFile(input){
         var files = input.files
         for(var file of files){
         if(file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg" ){
@@ -21,9 +21,14 @@
             }
             else{
                 var reader = new FileReader();
-                            reader.addEventListener("load", function () {
-                            console.log(file.name)
-                            stompClient.send("/app/id/"+id,{},JSON.stringify({'author':username,'data':reader.result,'name':file.name,"type":"file"}))
+                            reader.addEventListener("load", async function () {
+                            var x = reader.result.split(",")[1]
+                            console.log(x)
+                            var fname = file.name.split(".")
+                            var resp = await fetch("/file/"+id+"/"+fname[0]+"/"+fname[1],{method: "POST",body:x})
+                            var name = await resp.json()
+                            console.log(name)
+                            stompClient.send("/app/id/"+id,{},JSON.stringify({'author':username,'data':"/file/"+id+"/"+name['name'],'name':file.name,"type":"file"}))
                             }, false)
                             if (file) {
                                 reader.readAsDataURL(file);
