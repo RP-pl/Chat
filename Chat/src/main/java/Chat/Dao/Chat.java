@@ -12,11 +12,13 @@ public class Chat {
     public List<Message> messages;
     public String password;
     public String style;
-    public Chat(long id,String password,String style,List<Message> messages){
+    public String userID;
+    public Chat(long id,String password,String style,List<Message> messages,String userID){
         this.id = id;
         this.messages = messages;
         this.password = password;
         this.style = style;
+        this.userID = userID;
     }
 
     public void setMessages(List<Message> messages) {

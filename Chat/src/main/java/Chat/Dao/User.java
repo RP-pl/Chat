@@ -20,6 +20,8 @@ public class User implements UserDetails {
     private String password;
 
     private String username;
+    private String description;
+    private Collection<String> friend_usernames;
 
     private Boolean enabled;
 
@@ -29,7 +31,11 @@ public class User implements UserDetails {
 
     private boolean credentialsNonExpired;
 
-    public User(String email, String username, String password, Collection<Long> chats, Boolean enabled, Collection<? extends GrantedAuthority> authorities){
+    public Collection<String> friend_requester_usernames;
+
+    public Collection<Long> groups;
+
+    public User(String email, String username, String password,String description, Collection<Long> chats,Collection<String> friend_usernames,Collection<String> friend_requester_usernames,Collection<Long> groups, Boolean enabled, Collection<? extends GrantedAuthority> authorities){
         this.email = email;
         this.username = username;
         this.password = password;
@@ -39,6 +45,10 @@ public class User implements UserDetails {
         this.accountNonExpired = true;
         this.credentialsNonExpired = true;
         this.accountNonLocked = true;
+        this.friend_usernames = friend_usernames;
+        this.friend_requester_usernames = friend_requester_usernames;
+        this.description = description;
+        this.groups = groups;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -86,6 +96,10 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    public String getId() {
+        return id;
+    }
+
     @Override
     public boolean isEnabled() {
         return enabled;
@@ -98,5 +112,47 @@ public class User implements UserDetails {
     }
     public void addChat(Long id){
         chats.add(id);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Collection<String> getFriendUsernames() {
+        return friend_usernames;
+    }
+    public void addFriend(User friend){
+        friend_usernames.add(friend.username);
+    }
+    public void addFriendRequest(User friend){
+        if(!friend_usernames.contains(friend.username) && !friend_requester_usernames.contains(friend.username)){
+            friend_requester_usernames.add(friend.username);
+        }
+    }
+    public Collection<String> getFriendRequests() {
+        return friend_requester_usernames;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "authorities=" + authorities +
+                ", id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", chats=" + chats +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", description='" + description + '\'' +
+                ", friend_usernames=" + friend_usernames +
+                ", enabled=" + enabled +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", friend_requester_usernames=" + friend_requester_usernames +
+                '}';
     }
 }

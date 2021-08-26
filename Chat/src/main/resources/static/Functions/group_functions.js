@@ -4,12 +4,12 @@
     var messages=null
     const messageList = document.getElementById('messageList')
     function sendText(){
-        stompClient.send("/app/chat/id/"+id,{},JSON.stringify({'author':username,'data':document.getElementById('data').value,"type":"text"}))
+        stompClient.send("/app/group/id/"+id,{},JSON.stringify({'author':username,'data':document.getElementById('data').value,"type":"text"}))
                 var input = document.getElementById('data');
                 input.value = "";
 }
 function sendEmpty(){
-    stompClient.send("/app/chat/id/"+id,{},JSON.stringify({'author':username,'data':'',"type":"text"}));
+    stompClient.send("/app/group/id/"+id,{},JSON.stringify({'author':username,'data':'',"type":"text"}));
 }
     async function sendFile(input){
         var files = input.files
@@ -17,7 +17,7 @@ function sendEmpty(){
         if(file.type == "image/jpeg" || file.type == "image/png" || file.type == "image/jpg" ){
                 var reader = new FileReader();
                 reader.addEventListener("load", function () {
-                stompClient.send("/app/chat/id/"+id,{},JSON.stringify({'author':username,'data':reader.result,"type":"image"}))
+                stompClient.send("/app/group/id/"+id,{},JSON.stringify({'author':username,'data':reader.result,"type":"image"}))
                 }, false)
                 if (file) {
                     reader.readAsDataURL(file);
@@ -31,7 +31,7 @@ function sendEmpty(){
                             var resp = await fetch("/file/"+id+"/"+fname[0]+"/"+fname[1],{method: "POST",body:x})
                             var name = await resp.json()
                             console.log(name)
-                            stompClient.send("/app/chat/id/"+id,{},JSON.stringify({'author':username,'data':"/file/"+id+"/"+name['name'],'name':file.name,"type":"file"}))
+                            stompClient.send("/app/group/id/"+id,{},JSON.stringify({'author':username,'data':"/file/"+id+"/"+name['name'],'name':file.name,"type":"file"}))
                             }, false)
                             if (file) {
                                 reader.readAsDataURL(file);
@@ -42,27 +42,27 @@ function sendEmpty(){
         input.value = "";
     }
 
-async   function connectWithoutCookies() {
+async   function connectWithoutCookies(event) {
     var socket = new SockJS('/connect');
     stompClient = Stomp.over(socket);
-    id =document.getElementById('chatID').value;
+    id = event.currentTarget.value;
     if(id != ""&&id!=null){
-            var r = await fetch("/check/chat/has/"+id)
+            var r = await fetch("/check/group/has/"+id)
             var p = await r.text()
             if(p != "False"){
            username = p;
         document.getElementById('connect').setAttribute("disp","noDisplay");
         document.getElementById('messaging1').removeAttribute("disp");
         document.getElementById('messaging2').removeAttribute("disp");
-        document.cookie = "username="+username;
-        document.cookie = "id="+id;
+        document.cookie = "username_group="+username;
+        document.cookie = "id_group="+id;
         stompClient.connect({}, function (frame) {
-            stompClient.subscribe('/ws/chats/'+id, async function (response) {
+            stompClient.subscribe('/ws/groups/'+id, async function (response) {
                 messageList.innerHTML = "";
                 var chat = JSON.parse(response.body)
                 var body = document.getElementsByTagName('body')[0];
                 body.id = chat.style;
-                var req = await fetch("/check/chat/author/"+id)
+                var req = await fetch("/check/group/author/"+id)
                 var resp = await req.text()
                 messages = chat.messages
                 var i=0
@@ -123,7 +123,7 @@ async   function connectWithoutCookies() {
 function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect();
-        window.document.cookie = "username=; id=;";
+        window.document.cookie = "username_group=; id_group=;";
         document.getElementById('connect').removeAttribute("disp");
         document.getElementById('messaging1').setAttribute("disp","noDisplay");
         document.getElementById('messaging2').setAttribute("disp","noDisplay");
@@ -133,7 +133,7 @@ function disconnect() {
 function del(message){
     console.log(message)
     console.log(JSON.stringify(messages[message]))
-    stompClient.send("/app/del/chat/"+id,{},JSON.stringify(messages[message]))
+    stompClient.send("/app/del/group/"+id,{},JSON.stringify(messages[message]))
 }
 
 function openNewTab(src){
@@ -160,17 +160,17 @@ async function connectWithCookies(){
         for(var cookie of document.cookie.split(";")){
           var name = cookie.trim().split("=")[0]
           var value = cookie.trim().split("=")[1]
-          if(name=="username"){
+          if(name=="username_group"){
                 username=value;
           }
-          if(name=="id"){
+          if(name=="id_group"){
                 id=value;
           }
         }
          console.log(id)
          console.log(username)
         if(id!=""&&username!=""&&id!=null){
-        var r = await fetch("/check/chat/has/"+id)
+        var r = await fetch("/check/group/has/"+id)
         if(await r.text() != "False"){
             document.getElementById('connect').setAttribute("disp","noDisplay");
             document.getElementById('messaging1').removeAttribute("disp");
@@ -178,12 +178,12 @@ async function connectWithCookies(){
             var socket = new SockJS('/connect');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function (frame) {
-                stompClient.subscribe('/ws/chats/'+id, async function (response) {
+                stompClient.subscribe('/ws/groups/'+id, async function (response) {
                     messageList.innerHTML = "";
                     var chat = JSON.parse(response.body);
                     var body = document.getElementsByTagName('body')[0];
                     body.id = chat.style;
-                    var req = await fetch("/check/chat/author/"+id)
+                    var req = await fetch("/check/group/author/"+id)
                     var resp = await req.text()
                     var i=0
                     messages = chat.messages
@@ -239,3 +239,41 @@ async function connectWithCookies(){
             }
         }
 }
+function add(){
+    inviteCard.removeAttribute("disp")
+}
+function hide(){
+    inviteCard.setAttribute("disp","noDisplay")
+}
+function invite(event){
+    var value = event.currentTarget.value
+    fetch("/invite/friend",{
+        method: "GET",
+        mode: 'cors',
+        headers:{
+            "username" : value,
+            "group" : id
+        }
+    })
+}
+    function onTypedName(event){
+        var value = event.target.value
+        var list = document.getElementById("exp_list")
+        const regex = new RegExp(value+"\\w*");
+        for(var element of list.children){
+            if(element.children[0].innerHTML.match(regex)){
+              element.removeAttribute("style")
+            }
+            else{
+              element.setAttribute("style","display:none !important")
+            }
+        }
+    }
+
+    function hideList(event){
+        setTimeout(()=>{exp_list.setAttribute("style","display:none !important;")},120)
+    }
+
+    function showList(event){
+         exp_list.setAttribute("style","overflow-y:visible;height:0")
+    }

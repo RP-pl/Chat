@@ -10,7 +10,7 @@ import org.springframework.web.socket.config.annotation.*;
 public class Config implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/chats");
+        registry.enableSimpleBroker("/ws");
         registry.setApplicationDestinationPrefixes("/app");
     }
 
