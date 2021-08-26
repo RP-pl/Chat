@@ -28,21 +28,35 @@ namespace ChatFileManagement.Controllers
             return new JsonResult(new { status = "Working" });
         }
         [HttpGet]
-        [Route("file/return/{chat}/{name}")]
-        public IActionResult FileResp(String chat,String name)
+        [Route("/del/{name}")]
+        public IActionResult del(String name)
         {
-            return new FileStreamResult(System.IO.File.OpenRead("/home/Users/RP/Pictures/Skany/" +name+ _client.Get(name)), new MediaTypeHeaderValue("application/octet-stream"));
+            System.IO.File.Delete("/home/files/" + name + _client.Get(name));
+            return new JsonResult(new { status = "Deleted" });
+        }
+        [HttpGet]
+        [Route("file/return/{chat}/{name}")]
+        public IActionResult FileResp(String chat, String name)
+        {
+            try
+            {
+                return new FileStreamResult(System.IO.File.OpenRead("/home/files/" + name + _client.Get(name)), new MediaTypeHeaderValue("application/octet-stream"));
+            }
+            catch(Exception ex)
+            {
+                return new JsonResult(new { data="File does not exist"});
+            }
         }
         [HttpPost]
         [Route("file/create/{chat}/{name}/{type}")]
-        public IActionResult FileCr(String name,String type)
+        public IActionResult FileCr(String name, String type)
         {
             long i = 0;
             while (_client.Get(name + "_" + i) != null)
             {
                 i++;
             }
-            _client.Set(name + "_" + i,"." + type);
+            _client.Set(name + "_" + i, "." + type);
             name += "_" + i;
             try
             {
@@ -50,13 +64,13 @@ namespace ChatFileManagement.Controllers
                 using (var ms = new MemoryStream())
                 {
                     s.CopyTo(ms);
-                    System.IO.File.WriteAllBytes("/home/Users/RP/Pictures/Skany/" + name+"."+type, ms.ToArray());
+                    System.IO.File.WriteAllBytes("/home/files/" + name + "." + type, ms.ToArray());
                 }
             }
             finally
             {
             }
-            return new JsonResult(new {name = name});
+            return new JsonResult(new { name = name });
 
         }
     }
