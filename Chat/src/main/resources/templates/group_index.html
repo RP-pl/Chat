@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Container Chat</title>
     <link rel="icon" href=/Icon/ContainerChat.png>
     <link rel="stylesheet/less" type="text/css" href="/Styles/base_style.less" />
@@ -35,13 +36,13 @@
 <div style="position:sticky;top:0;z-index:2;">
     <nav id="nav" class="navbar fixed-top bg-dark navbar-dark navbar-expand-sm sticky-top justify-content-around">
         <ul class="navbar-nav justify-content-around mx-auto" style="width:90%">
-            <a class="navbar-brand text-white" href="#">
+            <a class="navbar-brand text-white" href="#" onclick="handle()">
                 <img src="/Icon/ContainerChat.png" width="30" height="30" alt="">Container Chat
             </a>
-            <li class="nav-item">
+            <li id="n1" class="nav-item">
                 <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item dropdown">
+            <li id="n2" class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Social</a>
                     <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/chat">Select Chat</a>
@@ -52,7 +53,7 @@
                         <a class="dropdown-item" href="/create/group">Create Group</a>
                     </div>
             </li>
-            <li class="nav-item dropdown">
+            <li id="n3" class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Friends</a>
                 <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown1">
                     <a class="dropdown-item" href="/mfr">Make request</a>
@@ -60,10 +61,10 @@
                     <a class="dropdown-item" href="/view">View friends</a>
                 </div>
             </li>
-            <li class="nav-item">
+            <li id="n4" class="nav-item">
                 <a class="nav-link" href="/settings">Settings</a>
             </li>
-            <li class="nav-item">
+            <li id="n5" class="nav-item">
                 <a class="nav-link" href="/logout">Logout</a>
             </li>
         </ul>
@@ -80,6 +81,7 @@
         <button subtype="btn" onclick="sendText()">Send</button>
         <button subtype="btn" onclick="disconnect()">Disconnect</button>
         <button subtype="btn" onclick="add()">Invite</button>
+        <button subtype="btn" onclick="quit()">Quit</button>
     </div>
 </div>
 <div class="mx-auto my-auto " style="display:flex;height:80%;width:100%;position:absolute;z-index:3;" disp="noDisplay" id="inviteCard">
@@ -99,16 +101,18 @@
     <div class="card-footer"><h4/></div>
 </div>
 </div>
-<div class="mx-auto my-auto " style="display:flex;height:80%;max-width:25%;" id="connect">
+<div class="mx-auto my-auto " style="display:flex;height:80%;width:300px" id="connect">
     <div class="card mx-auto row justify-content-center align-self-center" style="width: 100%;">
         <div class="card-header"><h3 id="label1">Select group:</h3></div>
         <div class="card-body">
             <div>
-                <div style="padding-bottom:3px;" th:each="group : ${groups}">
-                    <button class="list-group-item" style="display:block;width: 100%;" onClick="connectWithoutCookies(event)" th:value="${group.id}">
+                <div class="option" th:value="${group.id}" style="padding-bottom:3px;" th:each="group : ${groups}">
+                    <button class="list-group-item " style="display:block;width: 100%;" onClick="connectWithoutCookies(event)" th:value="${group.id}">
 
                         <div th:text="${group.name}">Name</div>
-                        <label class="small" th:each="i: ${#numbers.sequence(0, T(Math).min(4,#lists.size(groups) -1))}" th:with="user=${group.usernames[i]}" th:text="${#strings.append(user,' ')}"></label>
+                        <div th:unless="${#lists.isEmpty(group.usernames)}">
+                            <label class="small" th:each="i: ${#numbers.sequence(0, T(Math).min(4,(#lists.size(group.usernames) -1)))}" th:with="user=${group.usernames[i]}" th:text="${#strings.append(user,' ')}"></label>
+                        </div>
                     </button>
                 </div>
             </div>
@@ -128,5 +132,25 @@
         backdrop-filter: grayscale(30%);
     }
 </style>
+<script>
+  function handle(){
+    if(n1.getAttribute("style")!=null){
+      n1.removeAttribute("style")
+      n2.removeAttribute("style")
+      n3.removeAttribute("style")
+      n4.removeAttribute("style")
+      n5.removeAttribute("style")
+
+    }
+    else{
+
+      n1.setAttribute("style","display:none")
+      n2.setAttribute("style","display:none")
+      n3.setAttribute("style","display:none")
+      n4.setAttribute("style","display:none")
+      n5.setAttribute("style","display:none")
+    }
+  }
+</script>
 </body>
 </html>

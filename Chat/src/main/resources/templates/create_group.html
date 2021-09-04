@@ -2,6 +2,7 @@
 <html lang="en" class="w-100 h-100">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Container Chat</title>
     <link rel="icon" href=/Icon/ContainerChat.png>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
@@ -16,13 +17,13 @@
 <body class="h-100 w-100">
 <nav id="nav" class="navbar fixed-top bg-dark navbar-dark navbar-expand-sm sticky-top justify-content-around">
     <ul class="navbar-nav justify-content-around mx-auto" style="width:90%">
-        <a class="navbar-brand text-white" href="#">
+        <a class="navbar-brand text-white" href="#" onclick="handle()">
             <img src="/Icon/ContainerChat.png" width="30" height="30" alt="">Container Chat
         </a>
-        <li class="nav-item">
+        <li id="n1" class="nav-item">
             <a class="nav-link" href="/">Home</a>
         </li>
-        <li class="nav-item dropdown">
+        <li id="n2" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown0" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Social</a>
             <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/chat">Select Chat</a>
@@ -33,7 +34,7 @@
                 <a class="dropdown-item active" href="/create/group">Create Group</a>
             </div>
         </li>
-        <li class="nav-item dropdown">
+        <li id="n3" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Friends</a>
             <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown1">
                 <a class="dropdown-item" href="/mfr">Make request</a>
@@ -41,10 +42,10 @@
                 <a class="dropdown-item" href="/view">View friends</a>
             </div>
         </li>
-        <li class="nav-item">
+        <li id="n4" class="nav-item">
             <a class="nav-link" href="/settings">Settings</a>
         </li>
-        <li class="nav-item">
+        <li id="n5" class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
         </li>
     </ul>
@@ -133,6 +134,26 @@
     function showList(event){
          exp_list.setAttribute("style","overflow-y:visible;height:0")
     }
+</script>
+<script>
+  function handle(){
+    if(n1.getAttribute("style")!=null){
+      n1.removeAttribute("style")
+      n2.removeAttribute("style")
+      n3.removeAttribute("style")
+      n4.removeAttribute("style")
+      n5.removeAttribute("style")
+
+    }
+    else{
+
+      n1.setAttribute("style","display:none")
+      n2.setAttribute("style","display:none")
+      n3.setAttribute("style","display:none")
+      n4.setAttribute("style","display:none")
+      n5.setAttribute("style","display:none")
+    }
+  }
 </script>
 </body>
 </html>
