@@ -1,0 +1,34 @@
+body#monochromatic {
+@font : Helvetica;
+@font_color : black;
+@background_style : rgb(240,240,240);
+
+& [subtype="fbtn"]{
+    background-color:inherit;
+    font-family: @font;
+    color:blue;
+}
+& [subtype="btn"]{
+    font-family: @font;
+    background: @background_style;
+    color:@font_color;
+    margin: auto;
+}
+& #self{
+    background: @background_style;
+}
+& .data{
+    background:transparent;
+}
+& .container{
+    font-family: Helvetica;
+    background: white;
+    color:@font_color;
+    border-color: @background_style;
+    border-style:solid;
+    border-radius: 10px;
+    width:20%;
+    border:none;
+    margin:initial;
+}
+}

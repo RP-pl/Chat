@@ -1,0 +1,21 @@
+.dropdown-item.active{
+    color: #fff !important;
+}
+.dropdown-item{
+    background-color:transparent !important
+}
+.dropdown-item:hover{
+    color:rgba(255,255,255,.75) !important;
+}
+nav#nav{
+    background-color:#1892ef !important;
+}
+ul.navbar-nav{
+width:90%
+}
+.dropdown-menu{
+    background-color:#1892ef !important
+}
+.dropdown-item{
+    color: rgba(255,255,255,.5);
+}

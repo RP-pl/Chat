@@ -1,0 +1,19 @@
+@media screen and (orientation:portrait){
+    #c1{
+        align-items:start !important;
+    }
+}
+@media screen and (orientation: landscape){
+    #c1{
+        height:90% !important;
+    }
+}
+.card-header{
+    background-color:#1892ef58 !important;
+}
+.card-footer{
+    background-color:#1892ef58 !important;
+}
+.card{
+    width: 400px;
+}

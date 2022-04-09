@@ -1,0 +1,31 @@
+body#dark {
+@font : Helvetica;
+@font_color : white;
+@background_style : rgb(52, 58, 64);
+& [subtype="fbtn"]{
+    background-color:inherit;
+    font-family: @font;
+    color:blue;
+}
+& [subtype="btn"]{
+    font-family: @font;
+    background: @background_style;
+    color:@font_color;
+    margin: auto;
+}
+& #self{
+    background: @background_style;
+}
+& .data{
+    background:transparent;
+}
+& .container{
+    font-family: Helvetica;
+    background: @background_style;
+    color:@font_color;
+    border-radius: 10px;
+    width:20%;
+    border:none;
+    margin:initial;
+}
+}

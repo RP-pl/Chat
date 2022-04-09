@@ -1,0 +1,28 @@
+span{
+    height:100%;
+    background-color:#1892ef !important;
+}
+.form-group{
+    padding:10px;
+}
+p{
+    padding-right:5px
+}
+input[type="submit"]{
+    margin-top:10px;
+    background-color:#1892ef;
+    font-weight:bold;
+}
+input[type="submit"]:hover{
+    margin-top:10px;
+    background-color:#1892ef;
+    font-weight:bold;
+}
+div.submit{
+    display:flex;
+    justify-content:right;
+}
+i{
+    background-color:#1892ef;
+    color:white;
+}

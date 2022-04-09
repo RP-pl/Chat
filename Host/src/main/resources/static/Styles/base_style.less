@@ -1,0 +1,90 @@
+@wh :90;
+@quarter :4;
+@ht : (@wh/@quarter);
+@comfyGrey : #606060;
+html{
+    width:100%;
+    height:100%;
+}
+body{
+    width:100%;
+    height:100%;
+    background:rgb(255,255,255)
+}
+.message-from{
+    position:sticky;
+}
+#messageList{
+    display: flex;
+    flex-direction:column;
+    z-index: 1;
+}
+.container{
+    margin-bottom: 3px !important;
+    min-width:250px
+}
+.author{
+    left:10px;
+}
+.message-form{
+    position:sticky;
+    top:0;
+    z-index: 2;
+}
+.top{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.data{
+    left:10px;
+    max-width:100%;
+    word-wrap: break-word;
+    border-radius:inherit;
+    background-color: inherit;
+}
+#move{
+    justify-content:flex-end;
+}
+[disp="noDisplay"]{
+    display:none !important;
+}
+[subtype="btn"]{
+    border:none;
+    width:@wh*1px;
+    height:@ht*1px;
+    border-radius:10px;
+}
+[subtype="btn"]{
+        margin: auto;
+        margin-left: 25%;
+        margin-top:5%
+}
+.img{
+    width:100%;
+}
+#data{
+    padding:0px;
+    margin:0px;
+    border:none;
+    width:95%;
+    height:100%;
+    background-color: inherit;
+    &:focus{
+        outline: none;
+    }
+}
+
+[subtype="fbtn"]{
+    font-weight: bold;
+    border-style: none;
+    width:3%;
+    height:30px;
+    padding:0px;
+    margin-left:0px
+}
+.spacer{
+    width:100%;
+    display:flex;
+    justify-content:flex-start;
+}

@@ -1,0 +1,115 @@
+version: "3.9"
+services:
+  host:
+    build: .\Host
+    image: host_compose
+    container_name: host
+    ports:
+      - "0.0.0.0:8080:8080"
+    networks:
+      chat_network:
+        ipv4_address: 172.16.238.100
+    depends_on:
+      - mailing_service
+      - mongo
+      - file_service
+
+  mongo:
+    build: .\MongoDB
+    image: mongo
+    container_name: mongo
+    ports:
+      - "127.0.0.1:8081:27017"
+    networks:
+      chat_network:
+        ipv4_address: 172.16.238.101
+    volumes:
+      - type: volume
+        source: mongo_volume
+        target: /data
+
+  redis_mailing:
+    build: 
+      context: .\Redis
+    image: redis_server
+    container_name: redis_mailing
+    ports:
+      - "127.0.0.1:8083:6379"
+    networks:
+      chat_network:
+        ipv4_address: 172.16.238.102
+
+  redis_forgot_password:
+    build: 
+      context: .\Redis
+    image: redis_server
+    container_name: redis_forgot_password
+    ports:
+      - "127.0.0.1:8085:6379"
+    networks:
+      chat_network:
+        ipv4_address: 172.16.238.106
+
+  redis_files:
+    build: 
+      context: .\Redis
+    image: redis_server
+    container_name: redis_files
+    ports:
+      - "127.0.0.1:8084:6379"
+    networks:
+      chat_network:
+        ipv4_address: 172.16.238.104
+
+  mailing_service:
+    build: 
+      context: .\Email
+    image: auth_compose
+    container_name: mailing_service
+    ports:
+      - "127.0.0.1:8082:8082"
+    networks:
+      chat_network:
+        ipv4_address: 172.16.238.103
+    depends_on:
+      - redis_mailing
+      - mongo
+
+  file_service: 
+    build: .\Files
+    image: netms_compose
+    container_name: file_service
+    ports:
+      - "127.0.0.1:5000:5000"
+    networks:
+      chat_network:
+          ipv4_address: 172.16.238.105
+    depends_on:
+      - redis_files
+
+  forgot_password_service:
+    build: 
+      context: .\Forgot
+    image: forgot_compose
+    container_name: forgot_password_service
+    ports:
+      - "127.0.0.1:8086:8084"
+    networks:
+      chat_network:
+        ipv4_address: 172.16.238.107
+    depends_on:
+      - redis_forgot_password
+      - mongo
+
+networks:
+  chat_network:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1
+volumes:
+  mongo_volume:
+    external: true
